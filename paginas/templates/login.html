@@ -1,0 +1,75 @@
+{% load static %}
+
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <title>Login</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/fontawesome/fontawesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/fontawesome/brands.min.css1 rel' %}" rel ="stylesheet">
+    <link href="{% static 'css/fontawesome/solid.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/sistema/landpage.css' %}" rel="stylesheet">
+    <link href="{% static 'css/sistema/login.css' %}"
+	rel="stylesheet">
+</head>
+
+<body>
+    <header id="topo">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'index' %}">Elétrica</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'index' %}"><i
+                                    class="fas fa-home"></i>&nbsp;Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><i
+                                    class="fas fa-id-card"></i>&nbsp;Login</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="form-signin">
+        <form id="formlogin" action="{% url 'escolha' %}">
+            <h1 class="h3 mb-3 fw-normal">Favor logar-se</h1>
+            <div class="form-floating">
+                <input type="texto" class="form-control" id="login" maxlength="10"
+                    placeholder="Login" required="required"> <label for="login">Login
+                </label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="senha" maxlength="15"
+                    placeholder="Senha"> <label for="senha">Senha</label>
+            </div>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Logar</button>
+        </form>
+    </main>
+    <footer class="container">
+        <hr class="featurette-divider">
+        <p class="float-end">
+            <a href="#topo">Voltar ao topo</a>
+        </p>
+        <p>
+            &copy; 2021–<script>
+                document.write(new Date().getFullYear())
+            </script>
+            | EasyController - O Seu projetista de controlador | IFSC
+            Jaraguá do Sul - Rau <a href="https://www.ifsc.edu.br/campus-jaragua-do-sul-rau" target="_blank">IFSC</a>
+        </p>
+    </footer>
+
+    <script src="{% static 'js/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/fontawesome/fontawesome.min.js' %}"></script>
+    <script src="{% static 'js/sistema/login.js' %}" ></script>
+</body>
+
+</html>

@@ -1,0 +1,545 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt.br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Static Navigation - SB Admin</title>
+    <link href="../../static/css/styles.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="">Projete seu controlador no domínio do tempo</a>
+        <!-- Sidebar Toggle-->
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+
+
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+
+
+                        <div class="sb-sidenav-menu-heading">Insira os parâmetros das matrizes </div>
+                        
+                            <tr>
+                                <td>Matriz A:</td>
+                                <td><input type="text" id="m1" name="m1" size="40" 
+                                        placeholder="Ex : 1,2,3"> <br /></td>
+                              </tr><!--
+                            <tr>
+                                <td>Matriz B:</td>
+                                <td><input type="text" id="martrizB" name="matrizB" size="40"
+                                        placeholder="Ex : 1,2,3"> <br /></td>
+                            </tr>                
+                         </table>
+
+                            <div class="sb-sidenav-menu-heading">Insira uma função transferência para D(s) </div>
+                            <table>
+                                <tr>
+                                    <td>Matriz C:</td>
+                                    <td><input type="text" id="numeradorD" name="numeradorD" size="40" value="1"
+                                            placeholder="Ex: 1,2,3"> <br /></td>
+                                </tr>
+                                <tr>
+                                    <td>Matriz D:</td>
+                                    <td><input type="text" id="denominadorD" name="denominador" size="40" value="1"
+                                            placeholder="Ex : 1,2,3"> <br /></td>
+                                </tr>-->
+                        </tr>
+                        <tr>
+                        <tr>
+                            
+                            </p>
+                            <button type="button" id="enviar-matriz" class="btn btn-secondary btn-lg btn-block">Calcule
+                                seu
+                                controlador</button>
+
+
+
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                                data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+
+
+                            </a>
+                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+                                data-bs-parent="#sidenavAccordion">
+
+
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4" id="card1">
+
+                </div>
+
+                <div class="card text-center">
+                    <div class="card-body">
+                        <p class="mb-0">
+                        <div class="box">
+                          
+                    
+                           <img src="{% static 'img/controle_mf1.png'%}" style="display: visibility;"
+                                id="malha_fechada" width="500" alt="">
+                            <textarea name="hide" style="display: none;">
+                                </textarea>
+                            <div class="card-header" id="texto" style="display: none; font-size: 22px">Sua resposta ao
+                                degrau unitário
+                                em malha aberta é: </div>
+
+                            </p>
+                            <div id="m1" style="font-size: 22px"></div>
+                            <div id="numeradoreq" style="font-size: 22px"></div>
+                            <div id="barraeq" style="font-size: 22px"></div>
+                            <div id="denominadoreq" style="font-size: 22px"></div>
+                            <div id="local-grafico">
+                            </div>
+                        </div>
+
+                        <div style="display: none;" id="card2" class="card w-100">
+                            <div class="card-body">
+                                <h5 style="font-size: 22px" class="card-header">Se o sistema acima é o desejado defina 
+                                    os parâmetros para o controle em malha fechada</h5>
+
+                                <img src="{% static 'img/pid1.png'%}" style="display: visibility;" img>
+                            </p>
+                            <table class="table" width="100px">
+                                <tr>
+                                  <td>Selecione:</td>
+                                  <td><select id="amostragem1" size="1" onchange="verifica2(this.value)">
+                                    <option value='1'>Definir amostragem</option>
+                                    <option value='0'>Não definir amostragem</option></td>
+                                </tr>
+                                <tr>
+                                  <td>Defina uma amostragem:</td>
+                                  <td><input type="text" id="amostragem" name="amostragem" size="40" value="0"
+                                          placeholder="Ex: 0.001"> <br /></td>
+                                </tr>
+                                <tr>
+                                  <td>Defina uma Referência:</td>
+                                  <td><input type="text" id="referencia" name="referencia" size="40" placeholder="Ex: 10">
+                                    <br /></td>
+                                </tr>
+                                <tr>
+                                  <td>Selecione:</td>
+                                  <td><select id="saturacao1" size="1" onchange="verifica1(this.value)">
+                                    <option value='1'>Definir saturação</option>
+                                    <option value='0'>Não definir saturação</option>
+    
+                                    </select></td>
+                                </tr>
+                                <tr>
+                                  <td>Defina uma saturação:</td>
+                                  <td><input type="text" id="saturacao" name="saturacao" size="40" value="0"
+                                    placeholder="Ex: 30">
+                                <br /></td>
+                                </tr>
+                                <tr>
+                                    <td>Selecione:</td>
+                                    <td><select id="controlador" onchange="verifica(this.value)">
+                                        <option value='4'>PID</option>
+                                        <option value='2'>PI</option>
+                                        <option value='3'>PD</option>
+                                        <option value='1'>P</option>
+    
+                                    </select></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Selecione:</td>
+                                    <td><select id="controladorcalc" onchange="verifica3(this.value)">
+                                        <option value='1'>Não calcular parâmetros automáticos</option>
+                                        <option value='2'>Zigler-Nichols primeiro método </option>
+                                        <option value='3'>Zigler-Nichols Segundo método</option>
+                                    </select></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Defina o valor de Kp:</td>
+                                    <td><input type="text" id="kp" name="kp" size="40" value="0" placeholder="Ex: 10">
+                                        <br /></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Defina o valor de Ti:</td>
+                                    <td><input type="text" id="ti" name="ti" size="40" value="0" placeholder="Ex: 0.1">
+                                        <br /></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Defina o valor de Td:</td>
+                                    <td><input type="text" id="td" name="td" size="40" value="0" placeholder="Ex: 1"> <br /></td>
+                                  </tr>
+                                  
+                              </table>
+
+                                </p>
+                                <button type="button" id="botao2" class="btn btn-secondary btn-lg btn-block">Seu sistema
+                                    projetado em malha fechada é:</button>
+
+                            </div>
+                        </div>
+                        <div id="card3" class="card w-100" style="display: none;">
+                            <div class="card-body">
+                                <h5 style="font-size: 22px" class="card-header">Seus sinais em malha fechada são:</h5>
+                                <div id="numeradoreq1" style="font-size: 22px"></div>
+                                <div id="barraeq1" style="font-size: 22px"></div>
+                                <div id="denominadoreq1" style="font-size: 22px"></div>
+                                &nbsp;
+                                <div id="controle-saida"></div>
+                                </p>
+                                </p>
+                                <div id="controle-controle"></div>
+                            </div>
+                            <table>
+                                <tr>
+                                    <td>Valor de Kp:</td>
+                                    <td><input type="text" id="kp1" name="kp1" size="40"  >
+                                        <br /></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Valor de Ti:</td>
+                                    <td><input type="text" id="ti1" name="ti1" size="40"  >
+                                        <br /></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Valor de Td:</td>
+                                    <td><input type="text" id="td1" name="td1" size="40"  > <br /></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Valor de saturação:</td>
+                                    <td><input type="text" id="saturacaoo" name="saturacaoo" size="40"> <br /></td>
+
+                                  <tr>
+                                    <td>Valor de amostragem:</td>
+                                    <td><input type="text" id="amostragemo" name="amostragemo" size="40" 
+                                    > <br /></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Valor de referência:</td>
+                                    <td><input type="text" id="referencia1" name="referencia1" size="40" 
+                                    > <br /></td>
+                                  </tr>
+                              </table>
+                            <textarea id="textoP">
+                                // Código gerado por EasyController - O Seu projetista de controlador
+                                // Válido para família Arduino modelos Nano, Uno e Mega.
+                                // instalar bliblioteca disponivel em : https://www.arduino.cc/reference/en/libraries/timerthree/
+                                // Definições de pinos como sensores entre outros deve ser feito pelo o usuário
+                                
+                                #include <TimerThree.h> 
+                                
+                                double kp=;				//  kp-Inserir valor gerado
+                                double T=;				// Período de amostragem-Inserir valor gerado
+                                double lim_sup=;			// Saturação - Inserir valor gerado
+                                double ref=;				// Define referência - Inserir valor gerado
+                                
+                                double erro;				// Vetor de erro
+                                double u;				// Vetor de controle
+                                double du;				// Variação do sinal de controle
+                                double y;				// Saída medida do sist
+                                
+                                // Para saída PWM
+                                double minPWM=;				// Define valor mínimo do PWM
+                                double maxPWM=;				// Define valor máximo do PWM
+                                double mapf(double val,double in_min,double in_max,double out_min,double out_max) {
+                                  return (val-in_min)*(out_max-out_min)/(in_max-in_min)+out_min;
+                                }
+                                
+                                // Setup
+                                void setup() {
+                                  Timer3.initialize(T*1000);		// Inicializa Timer3 com período de amostragem (em us)
+                                  Timer3.attachInterrupt(controlePID);	// Define a interrupção de tempo
+                                }
+                                
+                                // Interrupção de tempo
+                                void controlePID() {
+                                  erro[0] = ref -y;
+                                
+                                  du = r0*erro[0] ;
+                                  u[0] = du ;			// Sinal de controle (sem saturação)
+                                  
+                                  // Calcula sinal de controle saturado
+                                  if (u[0] > lim_sup){
+                                    u[0] = lim_sup;
+                                  } else if (u[0] < 0) {
+                                    u[0] = lim_inf;
+                                  }
+                                
+                                  // Mapeamento (float) do sinal de controle para a saída PWM
+                                  u_pwm = mapf(u[0],lim_inf,lim_sup,minPWM,maxPWM);
+                                
+                                  analogWrite(Pino,u_pwm);		// Indicar o número do Pino da saída PWM
+                                }
+                                
+                                // Loop principal
+                                void loop() {
+                                  // Escrever aqui as leituras, conversões de sinal, etc.
+                                  y = ...
+                                }
+                                      
+                            
+
+                            </textarea>
+
+                            <textarea id="textoPI">
+                                // Código gerado por EasyController - O Seu projetista de controlador
+                                // Válido para família Arduino modelos Nano, Uno e Mega.
+                                // instalar bliblioteca disponivel em : https://www.arduino.cc/reference/en/libraries/timerthree/
+                                // Definições de pinos como sensores entre outros deve ser feito pelo o usuário
+                                
+                                #include <TimerThree.h>
+                                
+                                double kp=;				// kp-Inserir valor gerado
+                                double Ti=;				// Ti- Inserir valor gerado
+                                double T=;				// Período de amostragem- Inserir valor gerado
+                                double lim_sup=;			// Saturação superior- Inserir valor gerado
+                                double ref=;				// Define referência- Inserir valor gerado
+                                
+                                double erro;				// Vetor de erro
+                                double u;				// Vetor de controle
+                                double du;				// Variação do sinal de controle
+                                double y;				// Saída medida do sistema
+                                
+                                
+                                // Constantes para controle
+                                r0 = float(kp*(Ti +T)/Ti)
+                                r1 = float(-kp)
+                                
+                                // Para saída PWM
+                                double minPWM=;				// Define valor mínimo do PWM
+                                double maxPWM=;				// Define valor máximo do PWM
+                                double mapf(double val,double in_min,double in_max,double out_min,double out_max) {
+                                  return (val-in_min)*(out_max-out_min)/(in_max-in_min)+out_min;
+                                }
+                                
+                                // Setup
+                                void setup() {
+                                  Timer3.initialize(T*1000);		// Inicializa Timer3 com período de amostragem (em us)
+                                  Timer3.attachInterrupt(controlePID);	// Define a interrupção de tempo
+                                }
+                                
+                                // Interrupção de tempo
+                                void controlePID() {
+                                  erro[0] = ref -y;
+                                
+                                  
+                                  u[0] = u[1] + (r0*erro[0]) + (r1*erro[1]);			// Sinal de controle (sem saturação)
+                                  
+                                  // Calcula sinal de controle saturado
+                                  if (u[0] > lim_sup){
+                                    u[0] = lim_sup;
+                                  } else if (u[0] < 0) {
+                                    u[0] = lim_inf;
+                                  }
+                                
+                                  // Mapeamento (float) do sinal de controle para a saída PWM
+                                  u_pwm = mapf(u[0],lim_inf,lim_sup,minPWM,maxPWM);
+                                
+                                  analogWrite(Pino,u_pwm);		// Indicar o número do Pino da saída PWM
+                                }
+                                
+                                // Loop principal
+                                void loop() {
+                                  // Escrever aqui as leituras, conversões de sinal, etc.
+                                  y = ...
+                                }
+                                     
+                            
+
+                            </textarea>
+                            
+                            <textarea id="textoPD">
+                                // Código gerado por EasyController - O Seu projetista de controlador
+                                // Válido para família Arduino modelos Nano, Uno e Mega.
+                                // instalar bliblioteca disponivel em : https://www.arduino.cc/reference/en/libraries/timerthree/
+                                // Definições de pinos como sensores entre outros deve ser feito pelo o usuário
+                                
+                                #include <TimerThree.h>
+                                
+                                double kp=;				// kp-Inserir valor gerado
+                                double Ti=;				// td- Inserir valor gerado
+                                double T=;				// Período de amostragem- Inserir valor gerado
+                                double lim_sup=;			// Saturação superior- Inserir valor gerado
+                                double ref=;				// Define referência- Inserir valor gerado
+                                
+                                double erro;				// Vetor de erro
+                                double u;				// Vetor de controle
+                                double du;				// Variação do sinal de controle
+                                double y;				// Saída medida do sistema
+                                
+                                
+                                // Constantes para controle
+                                r0 = float(kp*(Td +T)/T)
+                                r1 = float(-kp*Td/T)
+                                
+                                // Para saída PWM
+                                double minPWM=;				// Define valor mínimo do PWM
+                                double maxPWM=;				// Define valor máximo do PWM
+                                double mapf(double val,double in_min,double in_max,double out_min,double out_max) {
+                                  return (val-in_min)*(out_max-out_min)/(in_max-in_min)+out_min;
+                                }
+                                
+                                // Setup
+                                void setup() {
+                                  Timer3.initialize(T*1000);		// Inicializa Timer3 com período de amostragem (em us)
+                                  Timer3.attachInterrupt(controlePID);	// Define a interrupção de tempo
+                                }
+                                
+                                // Interrupção de tempo
+                                void controlePID() {
+                                  erro[0] = ref -y;
+                                
+                                  
+                                  u[0] =  (r0*erro[0]) + (r1*erro[1])			// Sinal de controle (sem saturação)
+                                  
+                                  // Calcula sinal de controle saturado
+                                  if (u[0] > lim_sup){
+                                    u[0] = lim_sup;
+                                  } else if (u[0] < 0) {
+                                    u[0] = lim_inf;
+                                  }
+                                
+                                  // Mapeamento (float) do sinal de controle para a saída PWM
+                                  u_pwm = mapf(u[0],lim_inf,lim_sup,minPWM,maxPWM);
+                                
+                                  analogWrite(Pino,u_pwm);		// Indicar o número do Pino da saída PWM
+                                }
+                                
+                                // Loop principal
+                                void loop() {
+                                  // Escrever aqui as leituras, conversões de sinal, etc.
+                                  y = ...
+                                }
+                                     
+                               
+                            
+
+                            </textarea>
+
+                            <textarea id="textoPID">
+                                // Código gerado por EasyController - O Seu projetista de controlador
+                                // Válido para família Arduino modelos Nano, Uno e Mega.
+                                // instalar bliblioteca disponivel em : https://www.arduino.cc/reference/en/libraries/timerthree/
+                                // Definições de pinos como sensores entre outros deve ser feito pelo o usuário
+                                
+                                #include <TimerThree.h>
+                                
+                                double kp=;				// Ganho kp
+                                double Ti=;				// Tempo integral [s]
+                                double Td=;				// Tempo derivativo [s]
+                                double T=;				// Período de amostragem
+                                double lim_sup=;			// Saturação superior
+                                double lim_inf=;			// Saturação inferior
+                                double ref=;				// Define referência
+                                
+                                double erro;				// Vetor de erro
+                                double u;				// Vetor de controle
+                                double du;				// Variação do sinal de controle
+                                double y;				// Saída medida do sistema
+                                
+                                
+                                // Constantes para controle
+                                double r0 = kp +kp*Td/T;
+                                double r1 = -kp +kp*T/Ti;
+                                double r2 = kp*Td/T;
+                                
+                                // Para saída PWM
+                                double minPWM=;				// Define valor mínimo do PWM
+                                double maxPWM=;				// Define valor máximo do PWM
+                                double mapf(double val,double in_min,double in_max,double out_min,double out_max) {
+                                  return (val-in_min)*(out_max-out_min)/(in_max-in_min)+out_min;
+                                }
+                                
+                                // Setup
+                                void setup() {
+                                  Timer3.initialize(T*1000);		// Inicializa Timer3 com período de amostragem (em us)
+                                  Timer3.attachInterrupt(controlePID);	// Define a interrupção de tempo
+                                }
+                                
+                                // Interrupção de tempo
+                                void controlePID() {
+                                  erro[0] = ref -y;
+                                
+                                  du = r0*erro[0] +r1*erro[1] +r2*erro[2];
+                                  u[0] = du +u[1];			// Sinal de controle (sem saturação)
+                                  
+                                  // Calcula sinal de controle saturado
+                                  if (u[0] > lim_sup){
+                                    u[0] = lim_sup;
+                                  } else if (u[0] < lim_inf) {
+                                    u[0] = lim_inf;
+                                  }
+                                
+                                  // Mapeamento (float) do sinal de controle para a saída PWM
+                                  u_pwm = mapf(u[0],lim_inf,lim_sup,minPWM,maxPWM);
+                                
+                                  analogWrite(Pino,u_pwm);		// Indicar o número do Pino da saída PWM
+                                }
+                                
+                                // Loop principal
+                                void loop() {
+                                  // Escrever aqui as leituras, conversões de sinal, etc.
+                                  y = ...
+                                }
+
+                            </textarea>
+
+                            </div>
+                        </div>
+
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <footer class="container">
+                            <hr class="featurette-divider">
+                            <p class="float-end">
+                                <a href="#topo">Voltar ao topo</a>
+                            </p>
+                            <p>
+                                &copy; 2021–<script>
+                                    document.write(new Date().getFullYear())
+                                </script>
+                                | EasyController - O Seu projetista de controlador | IFSC
+                                Jaraguá do Sul - Rau <a href="https://www.ifsc.edu.br/campus-jaragua-do-sul-rau" target="_blank">IFSC</a>
+                            </p>
+                        </footer>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    </head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    </head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript" src="../../static/js/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../../static/js/scripts.js"></script>
+    <script type="text/javascript" src="../../static/js/scriptsdois.js"></script>
+    <script type="text/javascript" src="../../static/js/script.selecao.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+{% load static %}
+
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <title>Escolha</title>
+    <link href="../../static/css/botão.1.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Static Navigation - SB Admin</title>
+    <link href="../../static/css/styles.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
+        crossorigin="anonymous"></script>
+</head>
+
+<body text="blue">
+    
+    <div class="box-2">
+
+        <a href="{% url 'modelo2' %}">
+        <button type="submit" class="btn btn-two">Domínio do Tempo</button>
+    </a>
+        
+        
+        <a href="{% url 'modelo' %}">
+        <button  type="submit"  class="btn btn-two">Domínio da Frequência</button>
+    </a>
+
+      </div>
+
+</body>
+
+</html>
