@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Cadastre-se</title>		
+		<link rel="stylesheet" type="text/css" href="{% static '../static/css/style2.css' %}">
+		<!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> -->
+		
+		<!-- <script type='text/javascript' src="{% static '../static/js/jquery.min.js' %}"></script> -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+		<script type='text/javascript' src="{% static '../static/js/jquery.tipsy.js' %}"></script>
+		<script type='text/javascript'>
+		$(function() {
+			$('#tipsy').tipsy({fade: true, gravity: 's'});
+		});
+		</script>
+		<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		
+	</head>
+	<body>
+		<div class="wrapper">
+			<img src="{% static '../static/images/logo.png' %}" alt="YourLogo" title="YourLogo"/>
+			<div class="hr"></div>
+			<h1>Página em construção</h1>
+			<p><strong> Em breve...</strong></p>
+						
+			<section class="progress">
+				<div class="progress-bar-container" id="tipsy" title="87% Complete"> <!-- Edit this title for the tooltip pop up -->
+					<article class="progress-bar" style="width:87%"  ></article> <!-- Edit the width percentage value to indicate progress -->
+				</div>
+				<article class="txt-launch-day-hat"></article>
+			</section>
+			
+			<div class="hr"></div>
+			<section class="mailing-list">
+				<a href="http://127.0.0.1:8000/index/" class="btn-primary">Voltar</a>
+				<!-- <h2>Want to be the first to know when we're ready?</h2> -->
+				<!-- <form>
+					<input type="text" value="your@email.com" onfocus="if(!this._haschanged){this.value=''};this._haschanged=true;">
+					<input type="submit" value="Subscribe">	
+				</form> -->
+			</section><div class="clear"></div>
+			<div class="hr"></div>
+			
+			<p class="credit">Template by <a href="http://www.medialoot.com">MediaLoot</a></p>
+		</div>
+
+		<script src="{% static 'css/bootstrap.min.css' %}"></script>
+	</body>
+</html>

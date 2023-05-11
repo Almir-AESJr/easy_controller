@@ -1,0 +1,450 @@
+<div class="navbar-container">
+
+  <h2>Controlador no domínio do tempo</h2>
+
+  <mat-expansion-panel expanded>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Parâmetros das matrizes
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-form-field class="example-full-width" appearance="fill" style="margin: 10px;">
+      <mat-label>Ordem do Sistema</mat-label>
+      <input type="number" [(ngModel)]="quadN" matInput placeholder="Estado da Matriz"
+             (change)="createTables()">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="fill" style="margin: 10px;">
+      <mat-label>Número de Entradas</mat-label>
+      <input type="number" [(ngModel)]="inL" matInput placeholder="Número de Entradas"
+             (change)="createTables()">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="fill" style="margin: 10px;">
+      <mat-label>Número de Saídas</mat-label>
+      <input type="number" [(ngModel)]="outM" matInput placeholder="Número de Saídas"
+             (change)="createTables()">
+    </mat-form-field>
+
+  </mat-expansion-panel>
+
+  <mat-expansion-panel expanded style="margin-top: 10px;">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Preenchimento das matrizes
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div  *ngFor="let matriz of matrizes; index as c">
+      <h4>Matriz {{matriz.label}}</h4>
+
+      <table>
+        <tr *ngFor="let vx of matriz.values; let i = index">
+          <td *ngFor="let vy of vx; let j = index; trackBy: trackByFilter">
+            <input type="text" id="cell_{{i}}_{{j}}" appDecimalNumber cdkTextAreaAutosize resizeToFitContent value="{{vy}}" matInput (blur)="matrizVaueChange(matriz, i, j, $event)" placeholder="0"
+                   style="width: 60px;">
+          </td>
+        </tr>
+      </table>
+    </div>
+  </mat-expansion-panel>
+
+  <button mat-raised-button color="primary" (click)="calc()" style="margin: 10px;">Calcular</button>
+
+  <div *ngIf="panelMA">
+    <mat-expansion-panel expanded style="margin-top: 10px;">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Controlabilidade e Observabilidade
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <h3>{{control_rank}}</h3>
+      <h3>{{obsv_rank}}</h3>
+    </mat-expansion-panel>
+
+
+
+    <mat-expansion-panel expanded style="margin-top: 10px;">
+      <mat-expansion-panel-header>
+            <mat-panel-title>
+              Dinâmica da planta
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+      <!-- <div *ngFor="let grafico of vY_linha; index as i;"> -->
+        <mat-expansion-panel expanded style="margin-top: 10px;">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Saídas
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <plotly-plot [data]="this.stepMA[0]" [layout]="graph.layout"></plotly-plot>
+        </mat-expansion-panel>
+      <!-- </div> -->
+    </mat-expansion-panel>
+
+    <mat-expansion-panel expanded style="margin-top: 10px; height: 250px;">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Escolha do Controlador
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="row">
+        <div class="col">
+          <div ngbDropdown class="d-inline-block">
+            <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Escolha o controlador</button>
+            <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button ngbDropdownItem (click)="costMatrixLqr()">LQR</button>
+              <button ngbDropdownItem (click)="costMatrixLqi()">LQR + Integrador</button>
+              <button ngbDropdownItem (click)="costMatrixLqg()">LQG</button>
+              <button ngbDropdownItem (click)="costMatrixLqgi()">LQG + Integrador</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </div>
+
+  <div *ngIf="panelCostMatrixLQR">
+    <mat-expansion-panel expanded style="margin-top: 10px;">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Definir Matrizes de Custo
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div  *ngFor="let CI of initialCond">
+          <h4>Condições Iniciais</h4>
+          <table>
+            <tr *ngFor="let vx of CI.values; let i = index">
+              <td *ngFor="let vy of vx; let j = index; trackBy: trackByFilter">
+                  <input type="text"  id="cell_{{i}}_{{j}}" appDecimalNumber value="{{vy}}" matInput (blur)="matrizVaueChange(CI, i, j, $event)" placeholder="valor"
+                        style="width: 60px;">
+              </td>
+            </tr>
+          </table>
+        </div>
+      <div  *ngFor="let myLQR of matriz_custo">
+        <h4>Matriz {{myLQR.label}}</h4>
+        <table>
+          <tr *ngFor="let vx of myLQR.values; let i = index">
+            <td *ngFor="let vy of vx; let j = index; trackBy: trackByFilter">
+                <input type="text"  id="cell_{{i}}_{{j}}" appDecimalNumber value="{{vy}}" matInput (blur)="matrizVaueChange(myLQR, i, j, $event)" placeholder="valor"
+                      style="width: 60px;">
+
+              </td>
+          </tr>
+        </table>
+      </div>
+
+
+      <button mat-raised-button color="primary" (click)="calc_lqr()" style="margin: 10px;">Calcular</button>
+    </mat-expansion-panel>
+      <div *ngIf="panelCalc_lqr">
+        <mat-expansion-panel expanded style="margin-top: 10px;">
+          <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Resposta para controlador LQR
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+
+
+          <!-- <div *ngFor="let grafico of yLQR; index as i;"> -->
+              <mat-expansion-panel expanded style="margin-top: 10px;">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Saída
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <plotly-plot [data]="this.yLQR[0]" [layout]="graphCI.layout"></plotly-plot>
+              </mat-expansion-panel>
+          <!-- </div> -->
+          <!-- <div *ngFor="let control_sig of uLQR; index as j;"> -->
+            <mat-expansion-panel expanded style="margin-top: 10px;">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Sinal de Controle
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <plotly-plot [data]="this.uLQR[0]" [layout]="graphCI.layout"></plotly-plot>
+            </mat-expansion-panel>
+          <!-- </div> -->
+          <mat-expansion-panel style="margin-top: 10px;">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                      Exibir Código
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <code style="display: block;white-space: pre-wrap;">{{codes.lqr}}</code>
+                <button mat-raised-button color="basic" [cdkCopyToClipboard]="codes.lqr" (click)="codeCopied()">Copiar código</button>
+
+          </mat-expansion-panel>
+        </mat-expansion-panel>
+
+      </div>
+  </div>
+
+  <div *ngIf="panelCostMatrixLQI">
+    <mat-expansion-panel expanded style="margin-top: 10px;">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Definir Matrizes de Custo
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div  *ngFor="let CI of initialCond">
+          <h4>Condições Iniciais</h4>
+          <table>
+            <tr *ngFor="let vx of CI.values; let i = index">
+              <td *ngFor="let vy of vx; let j = index; trackBy: trackByFilter">
+                  <input type="text"  id="cell_{{i}}_{{j}}" appDecimalNumber value="{{vy}}" matInput (blur)="matrizVaueChange(CI, i, j, $event)" placeholder="valor"
+                        style="width: 60px;">
+              </td>
+            </tr>
+          </table>
+        </div>
+      <div  *ngFor="let myLQI of matriz_custo">
+        <h4>Matriz {{myLQI.label}}</h4>
+        <table>
+          <tr *ngFor="let vx of myLQI.values; let i = index">
+            <td *ngFor="let vy of vx; let j = index; trackBy: trackByFilter">
+                <input type="text"  id="cell_{{i}}_{{j}}" appDecimalNumber value="{{vy}}" matInput (blur)="matrizVaueChange(myLQI, i, j, $event)" placeholder="valor"
+                      style="width: 60px;">
+
+              </td>
+          </tr>
+        </table>
+      </div>
+
+
+      <button mat-raised-button color="primary" (click)="calc_lqi()" style="margin: 10px;">Calcular</button>
+    </mat-expansion-panel>
+      <div *ngIf="panelCalc_lqi">
+        <mat-expansion-panel expanded style="margin-top: 10px;">
+          <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Resposta para controlador LQI
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+
+
+          <!-- <div *ngFor="let grafico of yLQI; index as i;"> -->
+              <mat-expansion-panel expanded style="margin-top: 10px;">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Saída
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <plotly-plot [data]="this.yLQI[0]" [layout]="graphCI.layout"></plotly-plot>
+              </mat-expansion-panel>
+          <!-- </div> -->
+          <!-- <div *ngFor="let control_sig of uLQI; index as j;"> -->
+            <mat-expansion-panel expanded style="margin-top: 10px;">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Sinal de Controle
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <plotly-plot [data]="this.uLQI[0]" [layout]="graphCI.layout"></plotly-plot>
+            </mat-expansion-panel>
+          <!-- </div> -->
+          <mat-expansion-panel style="margin-top: 10px;">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                      Exibir Código
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <code style="display: block;white-space: pre-wrap;">{{codes.lqi}}</code>
+                <button mat-raised-button color="basic" [cdkCopyToClipboard]="codes.lqi" (click)="codeCopied()">Copiar código</button>
+
+          </mat-expansion-panel>
+        </mat-expansion-panel>
+
+      </div>
+  </div>
+
+  <div *ngIf="panelCostMatrixLQG">
+      <mat-expansion-panel expanded style="margin-top: 10px;">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Definir Matrizes de Custo e Condições Iniciais
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div  *ngFor="let CI of initialCond">
+          <h4>Condições Iniciais</h4>
+          <table>
+            <tr *ngFor="let vx of CI.values; let i = index">
+              <td *ngFor="let vy of vx; let j = index; trackBy: trackByFilter">
+                  <input type="text"  id="cell_{{i}}_{{j}}" appDecimalNumber value="{{vy}}" matInput (blur)="matrizVaueChange(CI, i, j, $event)" placeholder="valor"
+                        style="width: 60px;">
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div  *ngFor="let myLQG of matriz_custo">
+          <h4>Matriz {{myLQG.label}}</h4>
+          <table>
+            <tr *ngFor="let vx of myLQG.values; let i = index">
+              <td *ngFor="let vy of vx; let j = index; trackBy: trackByFilter">
+                  <input type="text"  id="cell_{{i}}_{{j}}" appDecimalNumber value="{{vy}}" matInput (blur)="matrizVaueChange(myLQG, i, j, $event)" placeholder="valor"
+                        style="width: 60px;">
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div  *ngFor="let myKalman of matriz_kalman">
+          <h4> {{myKalman.label}}</h4>
+          <table>
+            <tr *ngFor="let vx of myKalman.values; let i = index">
+              <td *ngFor="let vy of vx; let j = index; trackBy: trackByFilter">
+                  <input type="text"  id="cell_{{i}}_{{j}}" appDecimalNumber value="{{vy}}" matInput (blur)="matrizVaueChange(myKalman, i, j, $event)" placeholder="valor"
+                        style="width: 60px;">
+
+                </td>
+            </tr>
+          </table>
+        </div>
+
+
+        <button mat-raised-button color="primary" (click)="calc_lqg()" style="margin: 10px;">Calcular</button>
+      </mat-expansion-panel>
+        <div *ngIf="panelCalc_lqg">
+          <mat-expansion-panel expanded style="margin-top: 10px;">
+            <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Resposta para controlador LQG
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+
+            <!-- <div *ngFor="let grafico of yLQG; index as i;"> -->
+                <mat-expansion-panel expanded style="margin-top: 10px;">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Saída
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <plotly-plot [data]="this.yLQG[0]" [layout]="graphCI.layout"></plotly-plot>
+                </mat-expansion-panel>
+            <!-- </div> -->
+            <!-- <div *ngFor="let control_sig of uLQG; index as j;"> -->
+              <mat-expansion-panel expanded style="margin-top: 10px;">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                      Sinal de Controle
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <plotly-plot [data]="this.uLQG[0]" [layout]="graphCI.layout"></plotly-plot>
+              </mat-expansion-panel>
+            <!-- </div> -->
+            <mat-expansion-panel style="margin-top: 10px;">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                      Exibir Código
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <code style="display: block;white-space: pre-wrap;">{{codes.lqg}}</code>
+                <button mat-raised-button color="basic" [cdkCopyToClipboard]="codes.lqg" (click)="codeCopied()">Copiar código</button>
+
+              </mat-expansion-panel>
+          </mat-expansion-panel>
+
+        </div>
+    </div>
+
+  <div *ngIf="panelCostMatrixLQGI">
+      <mat-expansion-panel expanded style="margin-top: 10px;">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Definir Matrizes de Custo e Condições Iniciais
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div  *ngFor="let CI of initialCond">
+          <h4>Condições Iniciais</h4>
+          <table>
+            <tr *ngFor="let vx of CI.values; let i = index">
+              <td *ngFor="let vy of vx; let j = index; trackBy: trackByFilter">
+                  <input type="text"  id="cell_{{i}}_{{j}}" appDecimalNumber value="{{vy}}" matInput (blur)="matrizVaueChange(CI, i, j, $event)" placeholder="valor"
+                        style="width: 60px;">
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div  *ngFor="let myLQGI of matriz_custo">
+          <h4>Matriz {{myLQGI.label}}</h4>
+          <table>
+            <tr *ngFor="let vx of myLQGI.values; let i = index">
+              <td *ngFor="let vy of vx; let j = index; trackBy: trackByFilter">
+                  <input type="text"  id="cell_{{i}}_{{j}}" appDecimalNumber value="{{vy}}" matInput (blur)="matrizVaueChange(myLQGI, i, j, $event); $event.stopImmediatePropagation()" placeholder="valor"
+                        style="width: 60px;">
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div  *ngFor="let myKalman of matriz_kalman">
+          <h4> {{myKalman.label}}</h4>
+          <table>
+            <tr *ngFor="let vx of myKalman.values; let i = index">
+              <td *ngFor="let vy of vx; let j = index; trackBy: trackByFilter">
+                  <input type="text"  id="cell_{{i}}_{{j}}" appDecimalNumber value="{{vy}}" matInput (blur)="matrizVaueChange(myKalman, i, j, $event)" placeholder="valor"
+                        style="width: 60px;">
+
+                </td>
+            </tr>
+          </table>
+        </div>
+
+
+      <button mat-raised-button color="primary" (click)="calc_lqgi()" style="margin: 10px;">Calcular</button>
+      </mat-expansion-panel>
+        <div *ngIf="panelCalc_lqgi">
+          <mat-expansion-panel expanded style="margin-top: 10px;">
+            <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Resposta para controlador LQG com integrador
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+            <!-- <div *ngFor="let grafico of yLQGI; index as i;"> -->
+                <mat-expansion-panel expanded style="margin-top: 10px;">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Saída
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <plotly-plot [data]="this.yLQGI[0]" [layout]="graphCI.layout"></plotly-plot>
+                </mat-expansion-panel>
+            <!-- </div> -->
+            <!-- <div *ngFor="let control_sig of uLQGI; index as j;"> -->
+              <mat-expansion-panel expanded style="margin-top: 10px;">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                      Sinal de Controle
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <plotly-plot [data]="this.uLQGI[0]" [layout]="graphCI.layout"></plotly-plot>
+              </mat-expansion-panel>
+            <!-- </div> -->
+
+            <mat-expansion-panel style="margin-top: 10px;">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                      Exibir Código
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <code style="display: block;white-space: pre-wrap;">{{codes.lqgi}}</code>
+                <button mat-raised-button color="basic" [cdkCopyToClipboard]="codes.lqgi" (click)="codeCopied()">Copiar código</button>
+
+              </mat-expansion-panel>
+          </mat-expansion-panel>
+
+        </div>
+    </div>
+
+</div>
+
